@@ -1,0 +1,159 @@
+Aria recordings:
+
+test recordings
+
+frame 1 - 140 - 139 - 139
+frame 2 - 170 - 164 - 164
+frame 3 - object 17 and 16... - not finished - 138 - 138
+frame 4 - 170 - 171 - 171
+frame 5 - 170 - 173 - 173
+frame 6 - 4 - not finished - 83 - 102
+frame 7 - 50 - not finished - 115 - 116
+frame 8 - 120 - 118 - 128
+frame 9 - 10 - not finished - 154 - 159
+frame 10 - 150 - 148 - 148
+
+plant 1 - 51 - not finished - 103 - 111
+plant 2 - 81 - 116 - 118
+plant 3 - 177 - 181 - 181
+plant 4 - 121 - 121 - 121
+plant 5 - 183 - 183 - 183
+plant 6 - 182 - 186 - 186
+plant 7 - 93 - not finished - 129 - 130
+plant 8 - 111 - 112 - 113
+plant 9 - 95 - 95 - 99
+plant 10 - 0 - not finished - 97 - 97
+plant 11 - 19 - not finished - 158 - 159
+
+clock 1 - 160 - 158 - 158
+clock 2 - 100 - 107 - 107
+clock 3 - 120 - 123 - 123
+clock 4 - 110 - 112 - 112
+clock 5 - 25 not finished - 104 - 107
+clock 6 - 160 - 153 - 153
+clock 7 - 140 - 140 - 141
+clock 8 - 120 - 119 - 120
+clock 9 - 120 - 121 - 121
+clock 10 - 70 - 86 - 90
+clock 11 - 170 - 170 - 172
+
+organizer 1 - 85 - 87 - 87
+organizer 2 - 170 - 176 - 176
+organizer 3 - 110 - 113 - 114
+organizer 4 - 120 - 119 - 119
+organizer 5 - 100 - 101 - 101
+organizer 6 - 146 - 147 - 147
+organizer 7 - 99 - 99 - 99
+organizer 8 - 178 - 179 - 179
+organizer 9 - 132 - 133 - 133
+organizer 10 - 120 - 123 - 124
+organizer 11 - 108 - 108 - 108 (made a iphone video from that scene)
+
+
+carton 1 - 100 - 97 - 97
+carton 2 - 150 - 151 - 151
+carton 3 - 150 - 148 - 148
+carton 4 - 90 - 92 - 92
+carton 5 - 80 - 89 - 89 (I tilt the carton here)
+carton 6 - 130 - 128 - 128
+carton 7 - 150 - 154 - 154
+carton 8 - 110 - 113 - 113
+carton 9 - 170 - 171 - 171
+carton 10 - 75 - 77 - 77
+carton 11 - 125 - 130 - 130
+
+ball 1 - 95 - 95 - 95
+ball 2 - 63 - 63 - 63
+ball 3 - 124 - 125 - 156
+ball 4 - 94 - 105 - 135
+ball 5 - 161 - 161 - 161
+ball 6 - 120 - 121 - 122
+ball 7 - 175 - 175 - 175
+ball 8 - 106 - 106 - 106
+ball 9 - 154 - 154 - 152
+ball 10 - 94 - 95 - 95
+ball 11 - 88 - 88 - 102
+
+basket 1 - 100 - 101 - 101
+basket 2 - 120 - 124 - 124
+basket 3 - 130 - 126 - 126
+basket 4 - 180 - 181 - 181
+basket 5 - 150 - 152 - 153 (minimal schon weg vom korb)
+basket 6 - 130 - 146 - 149
+basket 7 - 120 - 136 - 136
+basket 8 - 110 - 119 - 119
+basket 9 - 190 - 192 - 192
+basket 10 - 52 - 53 - 362 (sollte sehr komische Werte haben?!, nur in Final_Dataset_data)
+basket 11 - 4 - 36 - not finished - 180
+
+water 1 - 120 - 129 - 123
+water 2 - 90 - 118 (closer now) not finished - 164
+water 3 - 0 - 0 not finished - 123
+water 4 - 90 - 85 not finished - 152
+water 5 - 15 - 13 not finished - 171
+water 6 - 190 - 189 - 189
+water 7 - 180 - 184 - 184
+water 8 - 90 - 129 (closer now) not finished - 182
+water 9 - 0 - 0 - 100 not finished
+water 10 - 0 - 0 not finished - 177
+water 11 - 110 - 110 - 111
+
+test recording
+
+shoe 1 - 67 - not finished - 140 - 140
+shoe 2 - 15 - 27 not finished - 69
+shoe 3 - 41 - 41 - 42 not finished
+shoe 4 - 137 - 137 - 137
+shoe 5 - 146 - 146 - 155
+shoe 6 - 90 - 89 - 89
+shoe 7 - 46 - not finished - 107 - 133
+shoe 8 - 47 - 47 - 47 (iphone video)
+shoe 9 - 48 - 49 not finished - 139 (iphone video)
+shoe 10 - need to re-add - 106 - 106
+
+milk 1
+milk 2
+milk 3
+milk 4
+milk 5
+milk 6
+milk 7
+milk 8
+milk 9
+milk 10
+
+
+
+
+Teach & repeat 
+
+test recording
+
+water 1
+water 2
+water 3
+
+shoe 1
+
+blaues ding 1
+blaues ding 2
+blaues ding 3
+blaues ding 4
+blaues ding 5
+
+shoe 2
+shoe 3
+
+milk 1
+milk 2
+
+cow drawer 1
+cow drawer 2
+cow drawer 3
+cow drawer 4
+
+cow pick 1
+cow pick 2
+
+
+
