@@ -33,7 +33,7 @@ Recent approaches have successfully focused on the segmentation of static recons
 
 
 [[Project Webpage](https://behretj.github.io/LostAndFound/)]
-[[Paper](TODO:link)]
+[[Paper](https://arxiv.org/abs/2411.19162)]
 [[Teaser Video](https://youtu.be/xxMsaBSeMXo)]
 
 </div>
@@ -217,9 +217,13 @@ After setting the correct paths at the top of the file, you can start the tracki
 ## Citing Lost & Found
 
 ```
-@misc{TODO,
+@misc{behrens2024lostfoundupdating,
       title={Lost & Found: Updating Dynamic 3D Scene Graphs from Egocentric Observations}, 
       author={Tjark Behrens and René Zurbrügg and Marc Pollefeys and Zuria Bauer and Hermann Blum},
-      year={2024}, 
+      year={2024},
+      eprint={2411.19162},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2411.19162}, 
 }
 ```
