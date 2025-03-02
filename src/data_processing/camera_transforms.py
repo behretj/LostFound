@@ -77,6 +77,7 @@ def pose_aria_pointcloud(
     
     arucoDict = cv2.aruco.getPredefinedDictionary(marker_type)
     arucoParams = cv2.aruco.DetectorParameters()
+    detector = cv2.aruco.ArucoDetector(arucoDict, arucoParams)
 
     for i in range(provider.get_num_data(stream_id)):
         image_data = provider.get_image_data_by_index(stream_id, i)
@@ -88,7 +89,7 @@ def pose_aria_pointcloud(
         aruco_image = cv2.cvtColor(undistorted_image, cv2.COLOR_RGB2BGR)
         aruco_image = cv2.rotate(aruco_image, cv2.ROTATE_90_CLOCKWISE)
         
-        corners, ids, _ = cv2.aruco.detectMarkers(aruco_image, arucoDict, parameters=arucoParams)
+        corners, ids, _ = detector.detectMarkers(aruco_image, arucoDict, parameters=arucoParams)
 
         if len(corners) > 0:
             matching = np.array(ids)==id
@@ -198,9 +199,9 @@ def pose_ipad_pointcloud(
         
         arucoDict = cv2.aruco.getPredefinedDictionary(marker_type)
         arucoParams = cv2.aruco.DetectorParameters()
+        detector = cv2.aruco.ArucoDetector(arucoDict, arucoParams)
 
-
-        corners, ids, _ = cv2.aruco.detectMarkers(image, arucoDict, parameters=arucoParams)
+        corners, ids, _ = detector.detectMarkers(image, arucoDict, parameters=arucoParams)
 
         if len(corners) > 0:
             matching = np.array(ids)==id

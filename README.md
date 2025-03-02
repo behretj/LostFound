@@ -1,5 +1,5 @@
 <div align='center'>
-<h2 align="center"> Lost & Found: Updating Dynamic 3D Scene Graphs from Egocentric Observations </h2>
+<h2 align="center"> Lost & Found: Tracking Changes from Egocentric Observations in 3D Dynamic Scene Graphs </h2>
 
 <div class="is-size-5 publication-authors">
     <span class="author-block">
@@ -44,7 +44,7 @@ Recent approaches have successfully focused on the segmentation of static recons
 
 ```bash
 # create conda environment
-conda create -n lost_found python=3.10.12
+conda create -n lost_found -c conda-forge python=3.10.12
 
 # activate conda environment
 conda activate lost_found
@@ -217,13 +217,15 @@ After setting the correct paths at the top of the file, you can start the tracki
 ## Citing Lost & Found
 
 ```
-@misc{behrens2024lostfoundupdating,
-      title={Lost & Found: Updating Dynamic 3D Scene Graphs from Egocentric Observations}, 
-      author={Tjark Behrens and René Zurbrügg and Marc Pollefeys and Zuria Bauer and Hermann Blum},
-      year={2024},
-      eprint={2411.19162},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO},
-      url={https://arxiv.org/abs/2411.19162}, 
+@ARTICLE{LostFoundBehrens,
+    author={Behrens, Tjark and Zurbrügg, René and Pollefeys, Marc and Bauer, Zuria and Blum, Hermann},
+    journal={IEEE Robotics and Automation Letters}, 
+    title={{Lost & Found}: Tracking Changes from Egocentric Observations in 3D Dynamic Scene Graphs}, 
+    year={2025},
+    volume={},
+    number={},
+    pages={1-8},
+    keywords={Visual Tracking;Mapping;Semantic Scene Understanding},
+    doi={10.1109/LRA.2025.3544518}
 }
 ```
