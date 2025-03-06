@@ -1,5 +1,3 @@
-"""Example of how to load a rosbag and compare the trajectories in it."""
-
 from __future__ import annotations
 
 from trajectory_utils.eval import compare_trajectories
@@ -20,9 +18,9 @@ import numpy as np
 ####################################################
 
 if __name__ == "__main__":
-    DATA_FOLDER = "Data"
+    DATA_FOLDER = "Data/Final_Dataset"
     headless = True
-    add_score = False
+    add_score = True
     
     for scene in sorted(os.listdir(DATA_FOLDER)):
         scene_folder = os.path.join(DATA_FOLDER, scene)
@@ -31,10 +29,8 @@ if __name__ == "__main__":
         print("Object Category: ", object_category)
         
         obj_points = None
-        if add_score and os.path.exists("Data/Final_Models/" + object_category + ".npy"):
-            obj_points = np.load("Data/Final_Models/" + object_category + ".npy")
-            # Normalize the object points to be in the object frame
-            obj_points = obj_points - np.mean(obj_points, axis=0)
+        if add_score:
+            obj_points = np.load(os.path.join(scene_folder, "object_points.npy"))
 
         gt_object_w = trajectory_from_csv(os.path.join(scene_folder, "gt_object.csv"))
         pred_object_w = trajectory_from_csv(os.path.join(scene_folder, "pred_object.csv"))

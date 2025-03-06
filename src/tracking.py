@@ -8,7 +8,10 @@ import os
 import cv2
 import torch
 
-from src import SceneGraph, data_loader, project_pcd_to_image
+from src import SceneGraph, project_pcd_to_image
+from data_loader import data_loader
+from trajectory_utils.io.np_reader import trajectory_from_numpy
+from evaluation.eval_utils import trajectory_to_csv
 
 from typing import Optional
 from collections import deque
@@ -503,10 +506,13 @@ def track(
     if save_pose:
         prefix = ""
         if not use_hand: prefix = "pose_only_"
-        np.save(os.path.join(scan_dir, prefix + "glasses_trajectory.npy"), np.array(camera_poses))
-        np.save(os.path.join(scan_dir, prefix + "glasses_timestamps.npy"), np.array(camera_timestamps))
-        np.save(os.path.join(scan_dir, prefix + "object_trajectory.npy"), np.array(object_poses))
-        np.save(os.path.join(scan_dir, prefix + "object_timestamps.npy"), np.array(object_timestamps))
+        pred_obj_traj = trajectory_from_numpy(object_poses, object_timestamps, child_frame="Prediction/RigidBody", parent_frame="world")
+        pred_obj_traj = pred_obj_traj.resample(frequency=30)
+        pred_glasses_traj = trajectory_from_numpy(camera_poses, camera_timestamps, child_frame="RigidBody/AriaGlasses", parent_frame="world")
+        pred_glasses_traj = pred_glasses_traj.resample(frequency=30)
+        trajectory_to_csv(pred_obj_traj, os.path.join(scan_dir, prefix + "pred_object.csv"))
+        trajectory_to_csv(pred_glasses_traj, os.path.join(scan_dir, prefix + "pred_glasses.csv"))
+
 
 
 def headpose_track(
@@ -750,10 +756,12 @@ def headpose_track(
     if save_pose:
         filename = "headpose"
         if not use_hand: filename = "pose_only_" + filename
-        np.save(scan_dir + "/" + filename + "_glasses_trajectory.npy", np.array(camera_poses))
-        np.save(scan_dir + "/" + filename + "_glasses_timestamps.npy", np.array(camera_timestamps))
-        np.save(scan_dir + "/" + filename + "_object_trajectory.npy", np.array(object_poses))
-        np.save(scan_dir + "/" + filename + "_object_timestamps.npy", np.array(object_timestamps))
+        pred_obj_traj = trajectory_from_numpy(object_poses, object_timestamps, child_frame="Prediction/RigidBody", parent_frame="world")
+        pred_obj_traj = pred_obj_traj.resample(frequency=30)
+        pred_glasses_traj = trajectory_from_numpy(camera_poses, camera_timestamps, child_frame="RigidBody/AriaGlasses", parent_frame="world")
+        pred_glasses_traj = pred_glasses_traj.resample(frequency=30)
+        trajectory_to_csv(pred_obj_traj, os.path.join(scan_dir, filename + "pred_object.csv"))
+        trajectory_to_csv(pred_glasses_traj, os.path.join(scan_dir, filename + "pred_glasses.csv"))
     
     if video_path:
         # create video from images

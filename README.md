@@ -38,6 +38,10 @@ Recent approaches have successfully focused on the segmentation of static recons
 
 </div>
 
+# News :newspaper:
+* **March 5th**: We published the evaluation dataset. Have a look on [Zenodo](https://zenodo.org/records/14967441?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6ImFlODExYTAyLTNmOTAtNGM0MS04MmIwLTcyNGUxMDQ2OGIwNiIsImRhdGEiOnt9LCJyYW5kb20iOiJmOWQ5OTFlOWMxNGMyNDhiZmNhNDNiYWU4MmNlYjFlNyJ9.vomcn45hmApjK-RAtTiya1ucuXGwpXH_y7XM0Ntg7UqFiGYtQArLhI_XhHaODEblD-84YNkrsfvGAYGEiJhUpw) in order to reproduce our results or run your own pipeline.
+* **Febuary 4th**: Our paper has been accepted to the IEEE Robotics and Automation Letters (RA-L)!! Check it out [here](https://ieeexplore.ieee.org/document/10897827)
+
 ## Environment Setup :memo:
 
 - Setup conda environment
@@ -85,9 +89,9 @@ If problems arise with the thirdparty modules on your machine, have a look at th
     cd ../../..
     ```
 
-1) [Optional] Download [demo data](TODO) and extract them under the folder `demo_data/` as well as the respective [3D Scan](TODO) for the demo under the folder `Scan/`. (Coming Soon!)
+1) [Optional] Download [demo data](https://drive.google.com/drive/folders/1SsF2NCXXGSH5j8djj5vOCc12KYHWmrqq?usp=sharing) for a shoe scene and extract them under the folder `demo_data/` as well as the respective [3D scan](https://drive.google.com/drive/folders/1ejPuhIMpZlM5WvC3Fi1_9DFoNNdpXFiO?usp=sharing) for the demo under the folder `Scan/`.
 
-1) [Optional] Download the full [Evaluation Dataset](TODO) and extract them under the folder `Dataset/`. Download the [3D Scan](TODO) for the evaluation under the folder `Scan/` if not done so in the previous step already. (Coming Soon!)
+1) [Optional] Download the full [Evaluation Dataset](https://zenodo.org/records/14967441?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6ImFlODExYTAyLTNmOTAtNGM0MS04MmIwLTcyNGUxMDQ2OGIwNiIsImRhdGEiOnt9LCJyYW5kb20iOiJmOWQ5OTFlOWMxNGMyNDhiZmNhNDNiYWU4MmNlYjFlNyJ9.vomcn45hmApjK-RAtTiya1ucuXGwpXH_y7XM0Ntg7UqFiGYtQArLhI_XhHaODEblD-84YNkrsfvGAYGEiJhUpw). Extract the Dataset and the 3D Scan into the Data folder.
 
 1) [Optional] There is an easy docker setup available for the YOLO drawer detection algorithm. Simply pull the docker image from the hub (`docker pull craiden/yolodrawer:v1.0`). Start the container (`docker run -p 5004:5004 --gpus all -it craiden/yolodrawer:v1.0`) and run the module (`python3 app.py`). You need to activate the respective flag for drawer detection in the `preprocess_scan` function and in the `build` of the respective scene graph as mentioned in the demo section below. The functional elements for light switches are included in this repo as well. For the setup of the detection module, we refer to [this work](https://github.com/timengelbracht/Spot-Light). They also greatly demonstrate how robotic agents profit from the proposed scene graph structure in the case of light switches.
 

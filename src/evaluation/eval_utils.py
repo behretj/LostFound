@@ -9,6 +9,7 @@ from trajectory_utils.trajectory import Trajectory
 from trajectory_utils.io.np_reader import trajectory_from_numpy
 from trajectory_utils.io.bag_converter import load_trajectories_from_bag
 from trajectory_utils.utils.colors import get_colormap
+import plotly.graph_objects as go
 
 
 def compute_adds_score(pts3d, diameter, pose_gt, pose_pred, percentage=0.1):
@@ -216,13 +217,28 @@ def trajectory_to_csv(
     print(f"Trajectory saved to {csv_file} with frame metadata.")
 
 
-def create_GT(DATA_FOLDER, sampling_frequency, headless=True):
+def create_GT(DATA_FOLDER, sampling_frequency, headless=True, show_object=False):
+    """Generate ground truth object and glasses trajectories, aligning them with predictions.
+
+    This function loads and processes ground truth and predicted trajectories from recorded
+    data, aligns them spatially and temporally, transforms them into the appropriate reference
+    frames, and trims them based on interaction duration. Optionally, it visualizes the aligned
+    trajectories and object points before saving them as .csv and .npy files.
+
+    Args:
+        DATA_FOLDER (str): Path to the dataset folder containing scene results.
+        sampling_frequency (int): Frequency for resampling the trajectories.
+        headless (bool, optional): If False, visualizes aligned trajectories. Defaults to True.
+        show_object (bool, optional): If True, displays additional 3D object points. Defaults to False.
+
+    Returns:
+        None: Saves processed ground truth and predicted trajectories in the dataset folder.
+    """
     for scene in sorted(os.listdir(DATA_FOLDER)):
         scene_folder = os.path.join(DATA_FOLDER, scene)
         if not os.path.exists(os.path.join(scene_folder, "object_trajectory.npy")) or np.load(os.path.join(scene_folder, "object_trajectory.npy")).shape[0] == 0:
             print("Skipping scene, no predictions found")
             continue
-        
         # Load data
         gt_trajectories = load_trajectories_from_bag(os.path.join(scene_folder, scene + ".bag"))
         pred_trajectories = get_prediction_trajectories(
@@ -237,22 +253,12 @@ def create_GT(DATA_FOLDER, sampling_frequency, headless=True):
             gt_trajectories[key] = traj.resample(frequency=sampling_frequency)
 
         gt_glasses_w, gt_object_w = gt_trajectories["vicon/AriaGlasses"], gt_trajectories["vicon/RigidBody"]
-        
-        pred_glasses_w, pred_object_w_init = pred_trajectories["RigidBody/AriaGlasses"], pred_trajectories["Prediction/RigidBody"]
-        pred_object_w = pred_object_w_init.clone()
+        pred_glasses_w, pred_object_w = pred_trajectories["RigidBody/AriaGlasses"], pred_trajectories["Prediction/RigidBody"]
 
         # align the head trajectories to find time delay and rotation
         gt_glasses_w, pred_glasses_w_aligned, infos = gt_glasses_w.clone().temporal_align(pred_glasses_w, return_infos=True)
         delay, rotation, translation = infos["delay"], infos["rotation"], infos["translation"]
         gt_object_w = gt_object_w.slice(start_time=gt_glasses_w.start_time, end_time=gt_glasses_w.end_time)
-
-        # Shift all predictions to achieve spatial and temporal alignment
-        pred_glasses_w = pred_glasses_w.transform(translation, rotation)
-        pred_object_w = pred_object_w.transform(translation, rotation)
-        pred_glasses_w.parent_frame = "vicon"
-        pred_object_w.parent_frame = "vicon"
-        pred_glasses_w._timesteps -= delay
-        pred_object_w._timesteps -= delay
 
         # Compute inverse transformation to keep all data in Aria reference frame
         translation_np = translation.cpu().numpy()
@@ -264,13 +270,23 @@ def create_GT(DATA_FOLDER, sampling_frequency, headless=True):
         inv_translation = torch.tensor(inv_translation_np, dtype=translation.dtype, device=translation.device)
         inv_rotation = torch.tensor(inv_rotation_scipy.as_quat(), dtype=rotation.dtype, device=rotation.device)
 
+        # Shift all predictions to achieve spatial and temporal alignment
+        pred_glasses_w = pred_glasses_w.transform(translation, rotation)
+        pred_object_w = pred_object_w.transform(translation, rotation)
+        pred_glasses_w.parent_frame = "vicon"
+        pred_object_w.parent_frame = "vicon"
+        pred_glasses_w._timesteps -= delay
+        pred_object_w._timesteps -= delay
+
+        # Trim the trajectories to match the object interaction
         pred_object_w, pred_glasses_w, gt_object_w, gt_glasses_w = trim_trajectories_to_interaction(pred_object_w, pred_glasses_w, gt_object_w, gt_glasses_w)
-        
-        pred_object_w = pred_object_w.transform(inv_translation, inv_rotation)
-        gt_object_w = gt_object_w.transform(inv_translation, inv_rotation)
+
+        # Bring back to Aria coordinate system
         pred_glasses_w = pred_glasses_w.transform(inv_translation, inv_rotation)
+        pred_object_w = pred_object_w.transform(inv_translation, inv_rotation)
         gt_glasses_w = gt_glasses_w.transform(inv_translation, inv_rotation)
-        
+        gt_object_w = gt_object_w.transform(inv_translation, inv_rotation)
+
         # Match the orientation of GT and predicted trajectory, such that the first orientation is the same
         initial_pose_pred_obj = pred_object_w[0:1].clone()
         initial_pose_pred_obj._positions *= 0
@@ -297,15 +313,47 @@ def create_GT(DATA_FOLDER, sampling_frequency, headless=True):
         gt_glasses_w = gt_glasses_w @ initial_pose_pred_glasses
         gt_glasses_w.child_frame = 'vicon/AriaGlasses'
 
+        # load points and transform to object coordinate system within the scene
+        object_category = scene.split("_")[0]        
+        icp_pose = np.load(os.path.join(scene_folder, "icp_aligned_pose.npy"))
+        
+        obj_points = np.load("Data/Final_Models/" + object_category + ".npy")
+
+        obj_points = (np.hstack((obj_points, np.ones((obj_points.shape[0], 1)))) @ icp_pose.T)[:, :3]
+
+        rot_quaternion = R.from_quat(gt_object_w.orientations[0].cpu().numpy())
+        orientation_w = rot_quaternion.as_matrix()
+        translation_w = gt_object_w.positions[0].cpu().numpy().reshape(-1, 1)
+
+        init_pose = T = np.vstack((np.hstack((orientation_w, translation_w)), [0, 0, 0, 1]))
+        init_pose_inv = np.linalg.inv(init_pose)
+        obj_points = (np.hstack((obj_points, np.ones((obj_points.shape[0], 1)))) @ init_pose_inv.T)[:, :3]
+
+
         if not headless:
             # Show aligned trajectories
             fig = pred_object_w.show(show=False, line_color="blue", time_as_color=get_colormap("B71C1C"), show_frames=True)
             fig = gt_object_w.show(fig, show=False, line_color="darkblue", time_as_color=get_colormap("FF1744"), show_frames=True)
             fig = pred_glasses_w.show(fig, show=False, line_color="#00C853", time_as_color=get_colormap("00CCFF"), show_frames=True)
             fig = gt_glasses_w.show(fig, show=False, line_color="#00CCFF", time_as_color=get_colormap("00BBCC"), show_frames=True)
+
+            if show_object:
+                fig.add_trace(
+                    go.Scatter3d(
+                        x=obj_points[:, 0],
+                        y=obj_points[:, 1],
+                        z=obj_points[:, 2],
+                        mode="markers",
+                        marker=dict(size=5, color="red", opacity=0.8),
+                        name="Additional 3D Points",
+                    )
+                )
+
             # Title
             fig.update_layout(title="Aligned Trajectories")
             fig.show()
+        
+        np.save(os.path.join(scene_folder, "object_points.npy"), obj_points)
 
         trajectory_to_csv(gt_object_w, os.path.join(scene_folder, "gt_object.csv"))
         trajectory_to_csv(gt_glasses_w, os.path.join(scene_folder, "gt_glasses.csv"))
@@ -314,7 +362,4 @@ def create_GT(DATA_FOLDER, sampling_frequency, headless=True):
 
 
 if __name__ == "__main__":
-    DATA_FOLDER = "Data"
-    sampling_frequency = 30
-    create_GT(DATA_FOLDER, sampling_frequency, headless=False)
-
+    pass
