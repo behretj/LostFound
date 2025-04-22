@@ -39,6 +39,7 @@ Recent approaches have successfully focused on the segmentation of static recons
 </div>
 
 # News :newspaper:
+* **April 22nd**: Our paper has been accepted as a 4-page abstract to the Workshop on Computer Vision for Mixed Reality that is held in conjunction with CVPR 2025! More information [here](https://cv4mr.github.io/).
 * **March 5th**: We published the evaluation dataset. Have a look on [Zenodo](https://zenodo.org/records/14967441?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6ImFlODExYTAyLTNmOTAtNGM0MS04MmIwLTcyNGUxMDQ2OGIwNiIsImRhdGEiOnt9LCJyYW5kb20iOiJmOWQ5OTFlOWMxNGMyNDhiZmNhNDNiYWU4MmNlYjFlNyJ9.vomcn45hmApjK-RAtTiya1ucuXGwpXH_y7XM0Ntg7UqFiGYtQArLhI_XhHaODEblD-84YNkrsfvGAYGEiJhUpw) in order to reproduce our results or run your own pipeline.
 * **Febuary 4th**: Our paper has been accepted to the IEEE Robotics and Automation Letters (RA-L)!! Check it out [here](https://ieeexplore.ieee.org/document/10897827)
 
@@ -216,7 +217,13 @@ Calling `preprocessing.sh Data/` and entering user name and passsword when promp
 
 After setting the correct paths at the top of the file, you can start the tracking process: `python run_custom.py`. The different visualization options as well as the YOLO extension module work in the same way as explained in the [demo section](#run-demo).
 
+## License
 
+This project is licensed under the [MIT License](LICENSE).
+
+Please note that this repository may include code or components that are licensed under different open-source licenses. The respective licenses and copyrights of these components apply.
+
+We do not offer any warranty or assume liability for the correctness, legality, or suitability of third-party components.
 
 ## Citing Lost & Found
 
