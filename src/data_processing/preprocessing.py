@@ -112,7 +112,7 @@ def preprocess_aria(
     :param aruco_length: Physical length of the ArUco marker in meters, used for pose estimation.
     :return: 4x4 numpy array representing the pose of the detected marker, or None if no marker is found.
     """
-    if not os.path.exists(aria_dir  + "/icp_aligned_pose.npy"):
+    if not os.path.exists(aria_dir  + "/icp_aligned_pose.npy") or not os.path.exists(aria_dir + "/aruco_pose.npy"):
         if os.path.exists(aria_dir + "/aruco_pose.npy"):
             T_aria = np.load(aria_dir + "/aruco_pose.npy")
         else:
@@ -121,10 +121,11 @@ def preprocess_aria(
                 return None
             np.save(aria_dir + "/aruco_pose.npy", T_aria)
         
-        T_ipad = np.load(scan_dir + "/aruco_pose.npy")
-
-        T_scan_aria = icp_alignment(scan_dir, aria_dir, T_init=np.dot(T_aria, np.linalg.inv(T_ipad)))
-        np.save(aria_dir + "/icp_aligned_pose.npy", T_scan_aria)
+        if not os.path.exists(aria_dir  + "/icp_aligned_pose.npy"):
+            T_ipad = np.load(scan_dir + "/aruco_pose.npy")
+    
+            T_scan_aria = icp_alignment(scan_dir, aria_dir, T_init=np.dot(T_aria, np.linalg.inv(T_ipad)))
+            np.save(aria_dir + "/icp_aligned_pose.npy", T_scan_aria)
     
     return True
 
